@@ -68,11 +68,11 @@ def find_path(grid, start, goal):
     width = len(grid[0])
     height = len(grid)
     startX, startY = start
-    goal_x, goal_y = goal
+    goalX, goalY = goal
     
     # -1 corresponds to unmapped cell
-    dist_map = [[-1] * width for _ in range(height)]
-    dist_map[startX][startY] = 0
+    distMap = [[-1] * width for _ in range(height)]
+    distMap[startX][startY] = 0
     queueX = [startX]
     queueY = [startY]
     head = 0
@@ -82,15 +82,19 @@ def find_path(grid, start, goal):
         y = queueY[head]
         head += 1
         
-        if x == goal_x and y == goal_y:
+        if x == goalX and y == goalY:
             break
         
         for neighborX, neighborY in (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1):
-            if neighborX < width and neighborX >= 0 and neighborY < height and neighborY >= 0 and grid[neighborY][neighborX] == 0 and dist_map[neighborY][neighborX] == -1:
-                dist_map[neighborY][neighborX] = dist_map[y][x] + 1
+            if neighborX < width and neighborX >= 0 and neighborY < height and neighborY >= 0 and grid[neighborY][neighborX] == 0 and distMap[neighborY][neighborX] == -1:
+                distMap[neighborY][neighborX] = distMap[y][x] + 1
                 queueX.append(neighborX)
                 queueY.append(neighborY)
 
-    path = backtrack(dist_map, goal)
+    # if no path exists
+    if distMap[goalY][goalX] == -1:
+        return None
+
+    path = backtrack(distMap, goal)
     path.reverse()
     return path
