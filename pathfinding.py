@@ -5,7 +5,14 @@ Created on Mon Oct 19 10:09:31 2026
 @author: gagej
 """
 
-def parse_map(grid):
+'''
+rakes in a grid and returns a converted grid with open (0) and closed (1) cells
+'0' = 0
+'S' = 0
+'X' = 0
+'1' = 1
+'''
+def parseMap(grid):
     width = len(grid[0])
     height = len(grid)
     parsed = [[0] * width for _ in range(height)]
@@ -30,7 +37,7 @@ def parse_map(grid):
 
 
 '''
-    returns list of tuples that backtracks from an end point on the grid to a 0 value following consecutive decreasing values
+returns list of tuples that backtracks from an end point on the grid to a 0 value following consecutive decreasing values
 '''
 def backtrack(grid, end):
     width = len(grid[0])
@@ -64,7 +71,7 @@ start:
 goal:
     tuple (x, y)
 '''
-def find_path(grid, start, goal):
+def findPath(grid, start, goal):
     width = len(grid[0])
     height = len(grid)
     startX, startY = start
