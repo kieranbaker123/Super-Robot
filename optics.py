@@ -31,6 +31,12 @@ def scan():
         angleSetting[angle] = distance(pin1, pin1)
     return {"l": angleSetting[220], "f": angleSetting[105], "r": angleSetting[0]}
 
-
-    
+def checkObject(sensorData):
+    objects = {"l": -1, "f": -1, "r": -1}
+    for direction in sensorData.keys():
+        if 100 < sensorData[direction] < 300:
+            objects[direction] = 1
+        else:
+            objects[direction] = 0
+    return objects
     
