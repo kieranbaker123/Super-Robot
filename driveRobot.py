@@ -1,40 +1,56 @@
 from microbit import sleep
 import robotbit_library as r
+from math import fabs
 
-def driveRobot(a):
-    
-    CM_PER_SECOND = 13.5
-    CM_PER_TILE = 28.0
-    TURN_TIME = 500
-    
-    leftMotor = 0x1
-    rightMotor = 0x3
-    
-    leftPower = 50
-    rightPower = 50
-    
-    if a == 'left':
-        r.motor(leftMotor, 1 * leftPower)
-        r.motor(rightMotor, 1 * rightPower)
+CM_PER_SECOND = 13.5
+CM_PER_TILE = 28.0
+TURN_TIME = 500
+
+leftMotor = 0x1
+rightMotor = 0x3
+
+leftPower = 50
+rightPower = 50
+
+'''
+Turns the robot left or right
+Parameters:
+    direction, the direction to turn. Either 'l' for left or 'r' for right.
+'''
+def turn(direction):
+    if direction == 'l':
+        r.motor(leftMotor, leftPower)
+        r.motor(rightMotor, rightPower)
         sleep( TURN_TIME )
         r.all_stop()
-        driveRobot("forward")
-
-    elif a == 'right':
-        r.motor(leftMotor, -1 * leftPower)
-        r.motor(rightMotor, -1 * rightPower)
+    elif direction == 'r':
+        r.motor(leftMotor, -leftPower)
+        r.motor(rightMotor, -rightPower)
         sleep( TURN_TIME )
         r.all_stop()
-        driveRobot("forward")
     else:
-        directions = {
-            "forward": (-1, 1),
-            "backward": (1, -1),
-        }
-
-        leftDirection, rightDirection = directions[a]
+        print(f"(turn) Error: invalid direction input '{direction}'. Allowed inputs 'l', 'r'")
+        
+        
+'''
+Advances the robot forward or backward
+Parameters:
+    cells, the number of cells to move. Positive denotes forward, negative denotes backward.
+'''
+def advance(cells):
+    direction = (0, 0) # dummy values
     
-        r.motor(leftMotor, leftDirection * leftPower)
-        r.motor(rightMotor, rightDirection * rightPower)
-        sleep(int( CM_PER_TILE / CM_PER_SECOND * 1000 ))
-        r.all_stop()
+    if cells < 0:
+        direction = (1, -1) # backwards
+    elif cells > 0:
+        direction = (-1, 1) # forwards
+    else:
+        return # cells is 0, do nothing
+    
+    duration = fabs(cells) * int( CM_PER_TILE / CM_PER_SECOND * 1000 )
+    
+    r.motor(leftMotor, direction[0] * leftPower)
+    r.motor(rightMotor, direction[1] * rightPower)
+    sleep(duration)
+    r.all_stop()
+        
