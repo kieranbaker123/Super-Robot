@@ -21,17 +21,13 @@ def parseMap(grid):
         
     for y in range(height):
         for x in range(width):
-            match grid[y][x]:
-                case '0':
-                    parsed[y][x] = 0
-                case '1':
-                    parsed[y][x] = 1
-                case 'S':
-                    parsed[y][x] = 0
-                    start = (x, y)
-                case 'X':
-                    parsed[y][x] = 0
-                    goal = (x, y)
+            if grid[y][x] == '0' or grid[y][x] == 'S' or grid[y][x] == 'X':
+                parsed[y][x] = 0
+            elif grid[y][x] == '1':
+                parsed[y][x] = 1
+            else:
+                print(f"(parseMap) Error: Invalid cell identifier '{grid[y][x]}'. Allowed: '0', '1', 'S', 'X'")
+                return None
                 
     return parsed, start, goal
 
