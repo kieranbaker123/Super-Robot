@@ -1,10 +1,10 @@
 from microbit import *
 
-brightOpen = 1
-brightWall = 2
-brightStart = 3
+brightOpen = 4
+brightWall = 4
+brightStart = 4
 brightGoal = 4
-brightPath = 5
+brightPath = 9
 
 # assigns brightness value to each pixel based on cell value
 def displayGrid(grid, start, goal):
