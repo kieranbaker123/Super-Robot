@@ -6,7 +6,7 @@ Created on Mon Oct 19 10:09:31 2026
 """
 
 '''
-rakes in a grid and returns a converted grid with open (0) and closed (1) cells
+takes in a grid and returns a converted grid with open (0) and closed (1) cells
 '0' = 0
 'S' = 0
 'X' = 0
