@@ -6,23 +6,25 @@ Created on Mon Oct 19 10:09:31 2026
 """
 
 '''
-rakes in a grid and returns a converted grid with open (0) and closed (1) cells
+takes in a map string, map width, and map height and converts it to a 2d array
+'''
+def parseString(gridString, width, height):
+    grid = [[] * height]
+    index = 0
+    
+    for i in range(height):
+        for j in range(width):
+            grid[i].append(gridString[index])
+            index += 1
+    return grid
+
+'''
+takes in a grid and returns a converted grid with open (0) and closed (1) cells
 '0' = 0
 'S' = 0
 'X' = 0
 '1' = 1
 '''
-def parseString(gridString):
-    grid = [[],[],[],[],[]]
-    index = 0
-    
-    for i in range(5):
-        for j in range(5):
-            grid[i].append(gridString[index])
-            index += 1
-    return grid
-    
-    
 def parseMap(grid):
     width = len(grid[0])
     height = len(grid)
@@ -32,17 +34,13 @@ def parseMap(grid):
         
     for y in range(height):
         for x in range(width):
-            match grid[y][x]:
-                case '0':
-                    parsed[y][x] = 0
-                case '1':
-                    parsed[y][x] = 1
-                case 'S':
-                    parsed[y][x] = 0
-                    start = (x, y)
-                case 'X':
-                    parsed[y][x] = 0
-                    goal = (x, y)
+            if grid[y][x] == '0' or grid[y][x] == 'S' or grid[y][x] == 'X':
+                parsed[y][x] = 0
+            elif grid[y][x] == '1':
+                parsed[y][x] = 1
+            else:
+                print(f"(parseMap) Error: Invalid cell identifier '{grid[y][x]}'. Allowed: '0', '1', 'S', 'X'")
+                return None
                 
     return parsed, start, goal
 
@@ -73,10 +71,8 @@ def backtrack(grid, end):
 returns path from start to goal in list of position tuples
 
 grid in format:
-    '0' - open
-    '1' - blocked
-    'S' - start
-    'X' - goal
+    0 - open
+    1 - blocked
 start:
     tuple (x, y)
 goal:
@@ -116,6 +112,3 @@ def findPath(grid, start, goal):
     path = backtrack(distMap, goal)
     path.reverse()
     return path
-
-
-print(parseString("S01000010001110000101000X"))
