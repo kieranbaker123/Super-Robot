@@ -12,6 +12,17 @@ rakes in a grid and returns a converted grid with open (0) and closed (1) cells
 'X' = 0
 '1' = 1
 '''
+def parseString(gridString):
+    grid = [[],[],[],[],[]]
+    index = 0
+    
+    for i in range(5):
+        for j in range(5):
+            grid[i].append(gridString[index])
+            index += 1
+    return grid
+    
+    
 def parseMap(grid):
     width = len(grid[0])
     height = len(grid)
@@ -105,3 +116,6 @@ def findPath(grid, start, goal):
     path = backtrack(distMap, goal)
     path.reverse()
     return path
+
+
+print(parseString("S01000010001110000101000X"))
