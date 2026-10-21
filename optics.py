@@ -8,7 +8,15 @@ S1 = 0x1
 r.setup()
 TIME_OUT = 100000
 
-def distance(tp, ep):
+'''
+Gets data from the ultrasonic sensor
+Parameters:
+    tp, the trigger pin of the sensor
+    ep, the echo pin of the sensor
+Return:
+    Ultrasonic sensor data
+'''
+def getUltrasonicSensorData(tp, ep):
     # tp is the trigger pin and ep is the echo pin
     ep.read_digital()  # clear echo
     tp.write_digital(1)  # Send a 10 microSec pulse
@@ -22,13 +30,17 @@ def distance(tp, ep):
         # back a scaled value
     return ts  # Return timeout error as a negative number (-1)
 
-
+'''
+Scans adjacent cells for objects using the ultrasonic sensors
+Returns:
+    Dictionary of 'l', 'f', and 'r', with 1 as blocked and 0 as open
+'''
 def scan():
     angleSetting = {0: 0, 220: 0, 105: 0}
     for angle in angleSetting.keys():
         r.servo(S1, angle)
         sleep(1000)
-        angleSetting[angle] = distance(pin1, pin1)
+        angleSetting[angle] = getUltrasonicSensorData(pin1, pin1)
     return {"l": angleSetting[220], "f": angleSetting[105], "r": angleSetting[0]}
 
 def checkObject(sensorData):
