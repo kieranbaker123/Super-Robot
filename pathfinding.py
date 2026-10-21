@@ -6,6 +6,19 @@ Created on Mon Oct 19 10:09:31 2026
 """
 
 '''
+takes in a map string, map width, and map height and converts it to a 2d array
+'''
+def parseString(gridString, width, height):
+    grid = [[] * height]
+    index = 0
+    
+    for i in range(height):
+        for j in range(width):
+            grid[i].append(gridString[index])
+            index += 1
+    return grid
+
+'''
 takes in a grid and returns a converted grid with open (0) and closed (1) cells
 '0' = 0
 'S' = 0
