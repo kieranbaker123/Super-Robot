@@ -31,9 +31,9 @@ def getUltrasonicSensorData(tp, ep):
     return ts  # Return timeout error as a negative number (-1)
 
 '''
-Scans adjacent cells for objects using the ultrasonic sensors
+Gets ultrasonic sensor data for adjacent cells
 Returns:
-    Dictionary of 'l', 'f', and 'r', with 1 as blocked and 0 as open
+    Dictionary of 'l', 'f', and 'r', with corresponding ultrasonic sensor data
 '''
 def scan():
     angleSetting = {0: 0, 220: 0, 105: 0}
@@ -43,6 +43,11 @@ def scan():
         angleSetting[angle] = getUltrasonicSensorData(pin1, pin1)
     return {"l": angleSetting[220], "f": angleSetting[105], "r": angleSetting[0]}
 
+'''
+Checks for objects in the adjacent cells given sensor data
+Parameters:
+    sensorData, dictionary of 'l', 'f', and 'r', with 1 as blocked and 0 as open
+'''
 def checkObject(sensorData):
     objects = {"l": -1, "f": -1, "r": -1}
     for direction in sensorData.keys():
