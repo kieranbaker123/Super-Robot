@@ -38,7 +38,7 @@ Parameters:
     cells, the number of cells to move. Positive denotes forward, negative denotes backward. Default 1
 '''
 def advance(cells=1):
-    direction = (0, 0) # dummy values
+    direction: tuple # direction has scope of the function
     
     if cells < 0:
         direction = (1, -1) # backwards
