@@ -35,7 +35,7 @@ def animatePath(path):
             display.set_pixel(x, y, brightPath)
             sleep(130)
 
-# blinks the path 2 times 
+# blinks the path 2 times  
 def blinkPath(path, times=2, grid=None, start=None, goal=None):
     if not path:
         return
