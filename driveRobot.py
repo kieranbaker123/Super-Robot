@@ -6,11 +6,11 @@ CM_PER_SECOND = 13.5
 CM_PER_TILE = 28.0
 TURN_TIME = 500
 
-leftMotor = 0x1
-rightMotor = 0x3
+MOTOR_LEFT = 0x1
+MOTOR_RIGHT = 0x3
 
-leftPower = 50
-rightPower = 50
+POWER_LEFT = 50
+POWER_RIGHT = 50
 
 '''
 Turns the robot left or right
@@ -19,13 +19,13 @@ Parameters:
 '''
 def turn(direction):
     if direction == 'l':
-        r.motor(leftMotor, leftPower)
-        r.motor(rightMotor, rightPower)
+        r.motor(MOTOR_LEFT, POWER_LEFT)
+        r.motor(MOTOR_RIGHT, POWER_RIGHT)
         sleep( TURN_TIME )
         r.all_stop()
     elif direction == 'r':
-        r.motor(leftMotor, -leftPower)
-        r.motor(rightMotor, -rightPower)
+        r.motor(MOTOR_LEFT, -POWER_LEFT)
+        r.motor(MOTOR_RIGHT, -POWER_RIGHT)
         sleep( TURN_TIME )
         r.all_stop()
     else:
@@ -49,8 +49,8 @@ def advance(cells):
     
     duration = fabs(cells) * int( CM_PER_TILE / CM_PER_SECOND * 1000 )
     
-    r.motor(leftMotor, direction[0] * leftPower)
-    r.motor(rightMotor, direction[1] * rightPower)
+    r.motor(MOTOR_LEFT, direction[0] * POWER_LEFT)
+    r.motor(MOTOR_RIGHT, direction[1] * POWER_RIGHT)
     sleep(duration)
     r.all_stop()
         
