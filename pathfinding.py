@@ -58,10 +58,8 @@ def backtrack(grid, end):
 returns path from start to goal in list of position tuples
 
 grid in format:
-    '0' - open
-    '1' - blocked
-    'S' - start
-    'X' - goal
+    0 - open
+    1 - blocked
 start:
     tuple (x, y)
 goal:
