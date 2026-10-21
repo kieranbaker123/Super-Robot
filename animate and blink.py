@@ -6,7 +6,7 @@ brightStart = 3
 brightGoal = 4
 brightPath = 5
 
-# Assigns brightness value to each pixel based on cell value
+# assigns brightness value to each pixel based on cell value
 def displayGrid(grid, start, goal):
     display.clear()
     for y, row in enumerate(grid):
@@ -30,18 +30,19 @@ def animatePath(path):
     if not path:
         return
     for x, y in path:
-        # Skip the start and ending of the path to preserve their specific brightness marker
+        # skip the start and ending of the path to preserve their specific brightness marker
         if (x, y) != path[0] and (x, y) != path[-1]:
             display.set_pixel(x, y, brightPath)
             sleep(130)
 
+# blinks the path 2 times 
 def blinkPath(path, times=2, grid=None, start=None, goal=None):
     if not path:
         return
     for _ in range(times):
         showPath(path)
         sleep(350)
-        if grid is not None and start is not None and goal is not None:
+        if grid != None and start != None and goal != None:
             displayGrid(grid, start, goal)
         sleep(250)
 
