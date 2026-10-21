@@ -5,7 +5,7 @@ def driveRobot( a ):
     
     CM_PER_SECOND = 13.5
     CM_PER_TILE = 28.0
-    TURN_TIME = 100
+    TURN_TIME = 300
     
     leftMotor = 0x1
     rightMotor = 0x3
@@ -16,16 +16,18 @@ def driveRobot( a ):
     if a == 'left':
         r.motor(leftMotor, -1 * leftPower)
         r.motor(rightMotor, 1 * rightPower)
-        driveRobot("foreward")
+        sleep( TURN_TIME )
         r.motor(leftMotor, 0)
         r.motor(rightMotor, 0)
+        driveRobot("forward")
+
     elif a == 'right':
         r.motor(leftMotor, 1 * leftPower)
         r.motor(rightMotor, -1 * rightPower)
         sleep( TURN_TIME )
         r.motor(leftMotor, 0)
         r.motor(rightMotor, 0)
-        driveRobot("foreward")
+        driveRobot("forward")
     else:
         directions = {
             "forward": (1, 1),
@@ -36,6 +38,6 @@ def driveRobot( a ):
     
         r.motor(leftMotor, leftDirection * leftPower)
         r.motor(rightMotor, rightDirection * rightPower)
-        sleep(int( CM_PER_TILE / CM_PER_SECOND ))
+        sleep(int( CM_PER_TILE / CM_PER_SECOND * 1000 ))
         r.motor(leftMotor, 0)
         r.motor(rightMotor, 0)
