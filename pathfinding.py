@@ -5,6 +5,8 @@ Created on Mon Oct 19 10:09:31 2026
 @author: gagej
 """
 
+import math
+
 '''
 takes in a map string, map width, and map height and converts it to a 2d array
 '''
@@ -55,8 +57,10 @@ def backtrack(grid, end):
     width = len(grid[0])
     height = len(grid)
     x, y = end
+    
     if grid[y][x] == -1:
         return None
+    
     path = [end]
     
     while True:
@@ -110,12 +114,72 @@ def findPath(grid, start, goal):
                 queueX.append(neighborX)
                 queueY.append(neighborY)
 
-    # if no path exists
-    # if distMap[goalY][goalX] == -1:
-    #     return None
-
     path = backtrack(distMap, goal)
+                     
     if path == None:
         return None
+    
     path.reverse()
     return path
+
+
+'''
+Gets the relative direction to an adjacent cell
+Parameters:
+    cellPosition, (x, y) of the adjacent cell
+    robotPosition, (x, y) of the robot
+    faceDir, facing direction of the robot, 'u', 'r', 'd', or 'l'
+Returns:
+    the direction of the cell, 'f', 'r', 'l', 'b' for forward, right, left, and back
+'''
+def relativeDirToCell(cellPosition, robotPosition, faceDir):
+    cellX, cellY = cellPosition
+    robotX, robotY = robotPosition
+    
+    faceX, faceY = faceDirToFaceCoords(faceDir)
+    
+    dirX = cellX - robotX
+    dirY = cellY - robotY
+    
+    dot = faceX * dirX + faceY * dirY
+    det = faceX * dirY - faceY * dirX
+    
+    ccwRot = math.atan2(-det, dot) * 2 / math.pi # linear algebra stuff that i googled <3
+    
+    
+    if ccwRot == -2 or ccwRot == 2:
+        relDir = 'b'
+    elif ccwRot == -1:
+        relDir = 'r'
+    elif ccwRot == 0:
+        relDir = 'f'
+    elif ccwRot == 1:
+        relDir = 'l'
+    
+    return relDir
+    
+'''
+Converts a character faceDir to an (x,y) tuple
+Parameters:
+    faceDir, 'u', 'r', 'd', or 'l'
+Returns:
+    (faceX, faceY) tuple of the relative coordinates of the adjacent cell that the robot is facing
+'''
+def faceDirToFaceCoords(faceDir):
+    if faceDir == 'u':
+        faceX = 0
+        faceY = -1
+    elif faceDir == 'r':
+        faceX = 1
+        faceY = 0
+    elif faceDir == 'd':
+        faceX = 0
+        faceY = 1
+    elif faceDir == 'l':
+        faceX = -1
+        faceY = 0
+    
+    return (faceX, faceY)
+
+    
+    
