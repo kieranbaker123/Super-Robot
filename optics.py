@@ -51,7 +51,7 @@ Parameters:
 def checkObject(sensorData):
     objects = {"l": -1, "f": -1, "r": -1}
     for direction in sensorData.keys():
-        if 100 < sensorData[direction] < 300:
+        if sensorData[direction] < 300:
             objects[direction] = 1
         else:
             objects[direction] = 0
