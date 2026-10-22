@@ -29,19 +29,35 @@ def main():
     faceDir = 'd'
 
     while position != goal:
-        # TODO: check for objects
-        # TODO: update map and path
-
+        
+        # update display
         robotDisplay.displayGrid(grid, start, goal)
         display.set_pixel(position[0], position[1], 9)
+        
+        # get new objects
+        sensorData = optics.scan()
+        newObjects = optics.checkObject(sensorData)
+        
+        # update map
+        grid, isSame = objects.remap(position, faceDir, grid, newObjects)
+        
+        # if the grid changed, calculate new path
+        if not isSame:
+            path = pathfinding.findPath(grid, position, goal)
+            
+            # if the path exists, display it
+            if path != None:
+                path.pop(0)
+                robotDisplay.blinkPath(path, 2, grid, position, goal)
 
+        # check if path exists, if not skip rest of iteration
         if path == None:
             sleep(500)
             continue
-    
         robotDisplay.showPath(path)
-        nextCell = path[0]
         
+        # movement logic
+        nextCell = path[0]
         relDir, globalDir = pathfinding.dirToCell(nextCell, position, faceDir)
 
         print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
