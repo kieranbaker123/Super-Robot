@@ -63,6 +63,7 @@ def main():
 
         # check if path exists, if not skip rest of iteration
         if path == None:
+            print('(main.py, main)\t\t\tPath does not exist')
             sleep(500)
             continue
         robotDisplay.showPath(path)
