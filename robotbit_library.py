@@ -16,7 +16,6 @@ ALL_LED_ON_L       = 0xFA
 ALL_LED_ON_H       = 0xFB
 ALL_LED_OFF_L      = 0xFC
 ALL_LED_OFF_H      = 0xFD
-
 S1 = 0x1
 S2 = 0x2
 S3 = 0x3
@@ -25,58 +24,44 @@ S5 = 0x5
 S6 = 0x6
 S7 = 0x7
 S8 = 0x8
-
 M1A = 0x1
 M1B = 0x2
 M2A = 0x3
 M2B = 0x4
-
-# Bits:
 RESTART            = 0x80
 SLEEP              = 0x10
 ALLCALL            = 0x01
 INVRT              = 0x10
 OUTDRV             = 0x04
 RESET              = 0x00
-
 SERVO_MIN = 90
 SERVO_MAX = 430
 SERVOC_CENTER = 127
 SERVOC_RANGE = 127
-
 address = PCA9685_ADDRESS
 def setup():
-# startup process - initialize i2c connection with motor driver
     i2c.init()
     if int(address) in i2c.scan():
-        i2c.write(0x40,bytearray([MODE1, RESET]))        #self.i2c.send(bytearray([MODE1, RESET]), self.address)
+        i2c.write(0x40,bytearray([MODE1, RESET]))
         set_all_pwm(0,0)
-        i2c.write(address,bytearray([MODE2, OUTDRV]))    # self.i2c.send(bytearray([MODE2, OUTDRV]), self.address)
-        i2c.write(address,bytearray([MODE1, ALLCALL]))    #self.i2c.send(bytearray([MODE1, ALLCALL]), self.address)
-        sleep(0.005)  # wait for oscillator
-        i2c.write(address, bytearray([MODE1])) # write register we want to read from first
+        i2c.write(address,bytearray([MODE2, OUTDRV]))
+        i2c.write(address,bytearray([MODE1, ALLCALL]))
+        sleep(0.005) 
+        i2c.write(address, bytearray([MODE1]))
         mode1 = i2c.read(address,1)[0]
         mode1 = mode1 & ~SLEEP
         i2c.write(address,bytearray([MODE1, mode1]))
-        sleep(0.005)  # Wait for ascillator
+        sleep(0.005)
         set_pwm_freq(50)
     else:
         display.scroll("No Robotbit")
-#    print("pwm data ",set_pwm(S1,None,None))
 
 def set_all_pwm(on, off):
-#  Sets all PWM channels."""
-#    i2c.send(bytearray([ALL_LED_ON_L, on & 0xFF]), self.address)
     i2c.write(address,bytearray([ALL_LED_ON_L, on & 0xFF]))
-#    i2c.send(bytearray([ALL_LED_ON_H, on >> 8]), self.address)
-    i2c.write(address,bytearray([ALL_LED_ON_H, on >> 8]))  # Original Had error
-#    i2c.send(bytearray([ALL_LED_OFF_L, off & 0xFF]), self.address)
     i2c.write(address,bytearray([ALL_LED_OFF_L, off & 0xFF]))
-#    i2c.send(bytearray([ALL_LED_OFF_H, off >> 8]), self.address)
     i2c.write(address,bytearray([ALL_LED_OFF_H, off >> 8]))
 
 def set_pwm_freq(freq_hz):
-#Set the PWM frequency to the provided value in hertz."""
     prescaleval = 25000000.0    # 25MHz
     prescaleval /= 4096.0       # 12-bit
     prescaleval /= float(freq_hz)
