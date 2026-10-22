@@ -16,11 +16,11 @@ SECTOR_MAP = "S01000010001110000101000X"
 def main():
     grid_chars = pathfinding.parseString(SECTOR_MAP, 5, 5)
     grid, start, goal = pathfinding.parseMap(grid_chars)
-    for row in grid:
-        print(row)
-    print()
     
     path = pathfinding.findPath(grid, start, goal)
+    
+    if path != None:
+        path.pop(0) # remove start position
 
     robotDisplay.displayGrid(grid, start, goal)
     display.set_pixel(start[0], start[1], 9)        
@@ -29,84 +29,27 @@ def main():
     faceDir = 'd'
 
     while position != goal:
-        x, y = position
+        # TODO: check for objects
+        # TODO: update map and path
+        # TODO: advance to next cell in path
         
-        robotDisplay.displayGrid(grid, start, goal)
-
-        if path != None:
-            robotDisplay.showPath(path)
-        display.set_pixel(x, y, 9)    
+        nextCell = path[0]
         
-        sensorData = optics.scan()
-        adjObjects = optics.checkObject(sensorData)
-        grid, isSame = objects.remap(position, faceDir, grid, adjObjects)
+        relDir, globalDir = pathfinding.dirToCell(nextCell, position, faceDir)
 
-        if not isSame:
-            path = pathfinding.findPath(grid, position, goal)
-
-        if path == None:
-            continue
-
-        if position == path[0]:
-            path.pop(0)
+        print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
+        print('(main.py, main)\t\t\tFacing:', faceDir, 'To face:', globalDir, 'Turn:', relDir)
         
-        nextX, nextY = path[0]
-
-        print(position)
-
-        diffX = nextX - x
-        diffY = nextY - y
-
-        moveDir = 'x'
         
-        if diffX == 1:
-            moveDir = 'r'
-        elif diffX == -1:
-            moveDir = 'l'
-        elif diffY == 1:
-            moveDir = 'd'
-        elif diffY == -1:
-            moveDir = 'u'
-
-        print(moveDir)
-        print(path[0])
-        
-        moveDirDec = convertDirCharToDec(moveDir)
-        faceDirDec = convertDirCharToDec(faceDir)
-        
-        diff = moveDirDec - faceDirDec
-
-        if diff == 1:
-            driveRobot.turn('r')
-        elif diff == 2:
-            driveRobot.turn('r')
-            driveRobot.turn('r')
-        elif diff == 3:
-            driveRobot.turn('l')
-        elif diff == -1:
-            driveRobot.turn('l')
-        elif diff == -2:
-            driveRobot.turn('l')
-            driveRobot.turn('l')
-        elif diff == -3:
-            driveRobot.turn('r')
-            
+        if relDir != 'f':
+            driveRobot.turn(relDir)
         driveRobot.advance()
-
-        position = (nextX, nextY)
-        faceDir = moveDir
         
-        
+        faceDir = globalDir
+        position = nextCell
+        path.pop(0)
 
-def convertDirCharToDec(direction):
-    if direction == 'u':
-        return 0
-    if direction == 'r':
-        return 1
-    if direction == 'd':
-        return 2
-    if direction == 'l':
-        return 3
+        print('===================================================================================')
+        
 
 if __name__ == '__main__':
-    main()

@@ -17,7 +17,7 @@ POWER_RIGHT = 50
 '''
 Turns the robot left or right
 Parameters:
-    direction, the direction to turn. Either 'l' for left or 'r' for right.
+    direction, the direction to turn. Either 'l' for left, 'r' for right, or 'b' for turning around.
 '''
 def turn(direction):
     if direction == 'r':
@@ -25,11 +25,19 @@ def turn(direction):
         r.motor(MOTOR_RIGHT, POWER_RIGHT)
         sleep( RIGHT_TURN_TIME )
         r.all_stop()
+        print('(turn) Turned right')
     elif direction == 'l':
         r.motor(MOTOR_LEFT, -POWER_LEFT)
         r.motor(MOTOR_RIGHT, -POWER_RIGHT)
         sleep( LEFT_TURN_TIME )
-        r.all_stop()        
+        r.all_stop()
+        print('(turn) Turned left')
+    elif direction == 'b':
+        r.motor(MOTOR_LEFT, -POWER_LEFT)
+        r.motor(MOTOR_RIGHT, -POWER_RIGHT)
+        sleep( LEFT_TURN_TIME * 2 )
+        r.all_stop()
+        print('(turn) Turned around')
         
 '''
 Advances the robot forward or backward
@@ -52,3 +60,5 @@ def advance(cells=1):
     r.motor(MOTOR_RIGHT, direction[1] * POWER_RIGHT)
     sleep(duration)
     r.all_stop()
+    
+    print('(advance) Advanced', cells, 'cells')
