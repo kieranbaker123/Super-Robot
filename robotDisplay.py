@@ -3,8 +3,8 @@ from microbit import *
 # brightness values for each type of cell
 BRIGHT_OPEN = 0
 BRIGHT_WALL = 4
-BRIGHT_START = 4
-BRIGHT_GOAL = 4
+BRIGHT_START = 7
+BRIGHT_GOAL = 7
 BRIGHT_PATH = 6
 
 '''
