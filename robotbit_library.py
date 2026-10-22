@@ -1,11 +1,6 @@
-# Robot Bit Driver for Motors and servos
-# Author: S. Brophy
-# Version 1 - Original 8/10/2022
 from microbit import *
 from time import sleep
 import math, ustruct
-
-# Registers/etc:
 PCA9685_ADDRESS    = 0x40
 MODE1              = 0x00
 MODE2              = 0x01
@@ -86,12 +81,7 @@ def set_pwm_freq(freq_hz):
     prescaleval /= 4096.0       # 12-bit
     prescaleval /= float(freq_hz)
     prescaleval -= 1.0
-    # print('Setting PWM frequency to {0} Hz'.format(freq_hz))
-    # print('Estimated pre-scale: {0}'.format(prescaleval))
     prescale = int(math.floor(prescaleval + 0.5))
-    # print('Final pre-scale: {0}'.format(prescale))
-    # self.i2c.send(bytearray([MODE1]), self.address) # write register we want to read from first
-    #oldmode = self.i2c.mem_read(1, self.address, MODE1)[0]
     i2c.write(address, bytearray([MODE1])) # These two lines replace mem_read
     oldmode = i2c.read(address,1)[0]
     newmode = (oldmode & 0x7F) | 0x10    # sleep
@@ -102,10 +92,7 @@ def set_pwm_freq(freq_hz):
     i2c.write(address,bytearray([MODE1, oldmode | 0x80]))
 
 def set_pwm(channel, on, off):
-# Sets a single PWM channel."""
     if on is None or off is None:
-    # self.i2c.send(bytearray([LED0_ON_L+4*channel]), self.address) # write register we want to read from first
-        #data = self.i2c.mem_read(4, self.address, LED0_ON_L+4*channel)
         i2c.write(address, bytearray([LED0_ON_L+4*channel])) # These two lines replace mem_read
         data = i2c.read(address,4)
         return ustruct.unpack('<HH', data)
@@ -116,19 +103,11 @@ def set_pwm(channel, on, off):
     i2c.write(address,bytearray([LED0_OFF_H+4*channel, off >> 8]))
 
 def servo(index, degree):
-# Standard servo
-# 50hz: 20,000 us
-#    v_us = (degree*1000/180+1000)
-#    value = int(v_us*4096/20000) * 2
     gain = int(SERVO_MAX - SERVO_MIN)/180
     value = int(degree*gain + SERVO_MIN)
     set_pwm(index+7, 0, value)
 
 def servoc(index, pct_speed):
-        # 50hz: 20,000 us
-#        v_us = (degree*1000/180+1000)
-#        value = int(v_us*4096/20000) * 2
-# Positive speed is CW and Negative speed is CCW
     if pct_speed > 99:
         pct_speed = 99
     elif pct_speed < -99:

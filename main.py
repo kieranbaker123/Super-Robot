@@ -27,6 +27,9 @@ def main():
     iteration = 0
 
     while position != goal:
+        if button_b.was_pressed():
+            break
+        
         iteration += 1
         print('(main.py, main)\t\t\tIteration', iteration)
         
@@ -51,7 +54,6 @@ def main():
                 if position in path:
                     path.remove(position)
                 robotDisplay.blinkPath(path, 2, grid, position, goal)
-                print(path)
 
         if path == None:
             print('(main.py, main)\t\t\tPath does not exist')
