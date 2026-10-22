@@ -8,8 +8,8 @@ CM_PER_TILE = 28.0
 RIGHT_TURN_TIME = 385
 LEFT_TURN_TIME = 407
 
-MOTOR_LEFT = 0x1
-MOTOR_RIGHT = 0x3
+MOTOR_LEFT = 0x3
+MOTOR_RIGHT = 0x1
 
 POWER_LEFT = 47
 POWER_RIGHT = 50
@@ -48,9 +48,9 @@ def advance(cells=1):
     direction: tuple # direction has scope of the function
     
     if cells < 0:
-        direction = (1, -1) # backwards
+        direction = (-1, 1) # backwards
     elif cells > 0:
-        direction = (-1, 1) # forwards
+        direction = (1, -1) # forwards
     else:
         return # cells is 0, do nothing
     
