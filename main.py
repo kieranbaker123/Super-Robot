@@ -24,11 +24,18 @@ def main():
         robotDisplay.blinkPath(path, 2, grid, start, goal)
 
     robotDisplay.displayGrid(grid, start, goal)
-    display.set_pixel(start[0], start[1], 9)        
+    display.set_pixel(start[0], start[1], 9)
+    
     position = start
     faceDir = 'd'
+    
+    iteration = 0
 
     while position != goal:
+        iteration += 1
+        print('(main.py, main)\t\t\tIteration', iteration)
+        
+        # TODO: test object checking
         
         # update display
         robotDisplay.displayGrid(grid, start, goal)
@@ -43,6 +50,10 @@ def main():
         
         # if the grid changed, calculate new path
         if not isSame:
+            print('(main.py, main)\t\t\tNew objects detected, Map updated')
+            robotDisplay.displayGrid(grid, start, goal)
+            display.set_pixel(position[0], position[1], 9)
+            
             path = pathfinding.findPath(grid, position, goal)
             
             # if the path exists, display it
@@ -63,15 +74,25 @@ def main():
         print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
         print('(main.py, main)\t\t\tFacing:', faceDir, 'To face:', globalDir, 'Turn:', relDir)
         
+        # the the robot
         if relDir != 'f':
             driveRobot.turn(relDir)
+            
+        # advance robot to next cell
         driveRobot.advance()
         
+        # update location data
         faceDir = globalDir
         position = nextCell
+        
+        # remove completed cell from path
         path.pop(0)
 
-        print('===================================================================================')
+        print('============================')
+    
+    print('(main.py, main)\t\t\tLoop terminated')
+    if position == goal:
+        print('(main.py, main)\t\t\tGoal reached')
         
 
 if __name__ == '__main__':
