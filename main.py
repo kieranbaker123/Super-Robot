@@ -21,25 +21,31 @@ def main():
     
     if path != None:
         path.pop(0) # remove start position
+        robotDisplay.blinkPath(path, 2, grid, start, goal)
 
     robotDisplay.displayGrid(grid, start, goal)
     display.set_pixel(start[0], start[1], 9)        
-    robotDisplay.showPath(path)
     position = start
     faceDir = 'd'
 
     while position != goal:
         # TODO: check for objects
         # TODO: update map and path
-        # TODO: advance to next cell in path
-        
+
+        robotDisplay.displayGrid(grid, start, goal)
+        display.set_pixel(position[0], position[1], 9)
+
+        if path == None:
+            sleep(500)
+            continue
+    
+        robotDisplay.showPath(path)
         nextCell = path[0]
         
         relDir, globalDir = pathfinding.dirToCell(nextCell, position, faceDir)
 
         print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
         print('(main.py, main)\t\t\tFacing:', faceDir, 'To face:', globalDir, 'Turn:', relDir)
-        
         
         if relDir != 'f':
             driveRobot.turn(relDir)
@@ -53,3 +59,4 @@ def main():
         
 
 if __name__ == '__main__':
+    main()

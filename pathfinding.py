@@ -181,6 +181,13 @@ def faceDirToFaceCoords(faceDir):
     
     return (faceX, faceY)
 
+'''
+Converts facing direction coordinates to a faceDir character
+Parameters:
+    faceCoords, (x, y) tuple of a facing direction
+Returns:
+    faceDir, 'u', 'r', 'd', or 'l'
+'''
 def faceCoordsToFaceDir(faceCoords):
     if faceCoords == (0, 1):
         direction = 'd'
