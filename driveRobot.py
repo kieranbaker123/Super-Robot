@@ -1,15 +1,17 @@
 from microbit import sleep
 import robotbit_library as r
 from math import fabs
+from microbit import *
 
-CM_PER_SECOND = 13.5
+CM_PER_SECOND = 25.67
 CM_PER_TILE = 28.0
-TURN_TIME = 500
+RIGHT_TURN_TIME = 385
+LEFT_TURN_TIME = 407
 
 MOTOR_LEFT = 0x1
 MOTOR_RIGHT = 0x3
 
-POWER_LEFT = 50
+POWER_LEFT = 47
 POWER_RIGHT = 50
 
 '''
@@ -18,17 +20,16 @@ Parameters:
     direction, the direction to turn. Either 'l' for left or 'r' for right.
 '''
 def turn(direction):
-    if direction == 'l':
+    if direction == 'r':
         r.motor(MOTOR_LEFT, POWER_LEFT)
         r.motor(MOTOR_RIGHT, POWER_RIGHT)
-        sleep( TURN_TIME )
+        sleep( RIGHT_TURN_TIME )
         r.all_stop()
-    elif direction == 'r':
+    elif direction == 'l':
         r.motor(MOTOR_LEFT, -POWER_LEFT)
         r.motor(MOTOR_RIGHT, -POWER_RIGHT)
-        sleep( TURN_TIME )
-        r.all_stop()
-        
+        sleep( LEFT_TURN_TIME )
+        r.all_stop()        
         
 '''
 Advances the robot forward or backward
@@ -51,4 +52,3 @@ def advance(cells=1):
     r.motor(MOTOR_RIGHT, direction[1] * POWER_RIGHT)
     sleep(duration)
     r.all_stop()
-        
