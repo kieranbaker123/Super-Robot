@@ -1,11 +1,11 @@
 from microbit import *
 
 # brightness values for each type of cell
-BRIGHT_OPEN = 4
+BRIGHT_OPEN = 0
 BRIGHT_WALL = 4
 BRIGHT_START = 4
 BRIGHT_GOAL = 4
-BRIGHT_PATH = 9
+BRIGHT_PATH = 6
 
 '''
 Displays the grid, start, and goal cells on the microbit
@@ -16,15 +16,17 @@ Parameters:
 '''
 def displayGrid(grid, start, goal):
     display.clear()
-    for y, row in enumerate(grid):
-        for x, val in enumerate(grid):
-            if val == 1:
+    for y in range(len(grid)):
+        for x in range(len(grid[0])):
+            if grid[y][x] == 1:
                 display.set_pixel(x, y, BRIGHT_WALL)
-            else:
+            if grid[y][x] == 0:
                 display.set_pixel(x, y, BRIGHT_OPEN)
-    
-    display.set_pixel(*start, BRIGHT_START)
-    display.set_pixel(*goal, BRIGHT_GOAL)
+
+    sx, sy = start
+    gx, gy = goal
+    display.set_pixel(sx, sy, BRIGHT_START)
+    display.set_pixel(gx, gy, BRIGHT_GOAL)
 
 # lights up pixels
 def showPath(path):

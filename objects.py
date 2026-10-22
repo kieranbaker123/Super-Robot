@@ -2,12 +2,12 @@
 Gets the coordinates for adjacent cells, excluding behind the robot
 Parameters:
     position, a tuple (x, y)
-    faceDir, the facing direction 'l', 'r', 'u', 'd'
+    faceDir, the facing direction 'l', 'r', 'u'
 Returns:
     Dictionary of 'l', 'f', and 'r', with an (x, y) tuple for each
 '''
 def getAdjacentCoords(position, faceDir):
-    coords = {'l': (0,0), 'f': (0,0), 'r': (0,0), 'd': (0,0)}
+    coords = {'l': (0,0), 'f': (0,0), 'r': (0,0)}
     x, y = position
     if faceDir == 'd':
         coords['l'] = (x+1, y  )
@@ -40,10 +40,13 @@ Returns:
 def remap(position, faceDir, grid, objects):
     cGrid = grid
     objectCoords = getAdjacentCoords(position, faceDir)
+    same = True
     for direction in objectCoords.keys():
         coord = objectCoords[direction]
         if 0 <= coord[0] <= 4 and 0 <= coord[1] <= 4:
-            cGrid[coord[0]][coord[1]] = objects[direction]
+            cGrid[coord[1]][coord[0]] = objects[direction]
+            if cGrid[coord[1]][coord[0]] == grid[coord[1]][coord[0]]:
+                same = False
             
-    return cGrid, cGrid == grid
+    return cGrid, same
     

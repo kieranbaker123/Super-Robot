@@ -9,7 +9,7 @@ Created on Mon Oct 19 10:09:31 2026
 takes in a map string, map width, and map height and converts it to a 2d array
 '''
 def parseString(gridString, width, height):
-    grid = [[] * height]
+    grid = [[] for _ in range(height)]
     index = 0
     
     for i in range(height):
@@ -29,15 +29,21 @@ def parseMap(grid):
     width = len(grid[0])
     height = len(grid)
     parsed = [[0] * width for _ in range(height)]
-    start = (0, 0)
-    goal = (0, 0)
+    start = None
+    goal = None
         
     for y in range(height):
         for x in range(width):
-            if grid[y][x] == '0' or grid[y][x] == 'S' or grid[y][x] == 'X':
+            if grid[y][x] == '0':
                 parsed[y][x] = 0
             elif grid[y][x] == '1':
                 parsed[y][x] = 1
+            elif grid[y][x] == 'S':
+                parsed[y][x] = 0
+                start = (x, y)
+            elif grid[y][x] == 'X':
+                parsed[y][x] = 0
+                goal = (x, y)
                 
     return parsed, start, goal
 
@@ -49,6 +55,8 @@ def backtrack(grid, end):
     width = len(grid[0])
     height = len(grid)
     x, y = end
+    if grid[y][x] == -1:
+        return None
     path = [end]
     
     while True:
@@ -103,9 +111,11 @@ def findPath(grid, start, goal):
                 queueY.append(neighborY)
 
     # if no path exists
-    if distMap[goalY][goalX] == -1:
-        return None
+    # if distMap[goalY][goalX] == -1:
+    #     return None
 
     path = backtrack(distMap, goal)
+    if path == None:
+        return None
     path.reverse()
     return path
