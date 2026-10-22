@@ -25,19 +25,19 @@ def turn(direction):
         r.motor(MOTOR_RIGHT, POWER_RIGHT)
         sleep( RIGHT_TURN_TIME )
         r.all_stop()
-        print('(turn) Turned right')
+        print('(driveRobot.py, turn)\t\tTurned right')
     elif direction == 'l':
         r.motor(MOTOR_LEFT, -POWER_LEFT)
         r.motor(MOTOR_RIGHT, -POWER_RIGHT)
         sleep( LEFT_TURN_TIME )
         r.all_stop()
-        print('(turn) Turned left')
+        print('(driveRobot.py, turn)\t\tTurned left')
     elif direction == 'b':
         r.motor(MOTOR_LEFT, -POWER_LEFT)
         r.motor(MOTOR_RIGHT, -POWER_RIGHT)
         sleep( LEFT_TURN_TIME * 2 )
         r.all_stop()
-        print('(turn) Turned around')
+        print('(driveRobot.py, turn)\t\tTurned around')
         
 '''
 Advances the robot forward or backward
@@ -61,4 +61,4 @@ def advance(cells=1):
     sleep(duration)
     r.all_stop()
     
-    print('(advance) Advanced', cells, 'cells')
+    print('(driveRobot.py, advance)\tAdvanced', cells, 'cells')
