@@ -124,7 +124,7 @@ def findPath(grid, start, goal):
 
 
 '''
-Gets the relative direction to an adjacent cell
+Gets the relative direction and global direction to an adjacent cell
 Parameters:
     cellPosition, (x, y) of the adjacent cell
     robotPosition, (x, y) of the robot
@@ -132,7 +132,7 @@ Parameters:
 Returns:
     the direction of the cell, 'f', 'r', 'l', 'b' for forward, right, left, and back
 '''
-def relativeDirToCell(cellPosition, robotPosition, faceDir):
+def dirToCell(cellPosition, robotPosition, faceDir):
     cellX, cellY = cellPosition
     robotX, robotY = robotPosition
     
@@ -146,7 +146,6 @@ def relativeDirToCell(cellPosition, robotPosition, faceDir):
     
     ccwRot = math.atan2(-det, dot) * 2 / math.pi # linear algebra stuff that i googled <3
     
-    
     if ccwRot == -2 or ccwRot == 2:
         relDir = 'b'
     elif ccwRot == -1:
@@ -156,7 +155,8 @@ def relativeDirToCell(cellPosition, robotPosition, faceDir):
     elif ccwRot == 1:
         relDir = 'l'
     
-    return relDir
+    globalDir = faceCoordsToFaceDir((dirX, dirY))
+    return relDir, globalDir
     
 '''
 Converts a character faceDir to an (x,y) tuple
@@ -181,5 +181,14 @@ def faceDirToFaceCoords(faceDir):
     
     return (faceX, faceY)
 
-    
-    
+def faceCoordsToFaceDir(faceCoords):
+    if faceCoords == (0, 1):
+        direction = 'd'
+    if faceCoords == (0, -1):
+        direction = 'u'
+    if faceCoords == (1, 0):
+        direction = 'r'
+    if faceCoords == (-1, 0):
+        direction = 'l'
+
+    return direction
