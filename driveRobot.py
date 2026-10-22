@@ -28,8 +28,6 @@ def turn(direction):
         r.motor(MOTOR_RIGHT, -POWER_RIGHT)
         sleep( TURN_TIME )
         r.all_stop()
-    else:
-        print(f"(turn) Error: invalid direction input '{direction}'. Allowed inputs 'l', 'r'")
         
         
 '''

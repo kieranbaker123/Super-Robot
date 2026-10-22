@@ -38,9 +38,6 @@ def parseMap(grid):
                 parsed[y][x] = 0
             elif grid[y][x] == '1':
                 parsed[y][x] = 1
-            else:
-                print(f"(parseMap) Error: Invalid cell identifier '{grid[y][x]}'. Allowed: '0', '1', 'S', 'X'")
-                return None
                 
     return parsed, start, goal
 

@@ -1,37 +1,49 @@
 '''
 Gets the coordinates for adjacent cells, excluding behind the robot
 Parameters:
-    location, the location data of the robot, a list [x, y, faceDir]
+    position, a tuple (x, y)
+    faceDir, the facing direction 'l', 'r', 'u', 'd'
 Returns:
     Dictionary of 'l', 'f', and 'r', with an (x, y) tuple for each
 '''
-def getAdjacentCoords(location):
+def getAdjacentCoords(position, faceDir):
     coords = {'l': (0,0), 'f': (0,0), 'r': (0,0), 'd': (0,0)}
-    if location[2] == 'd':
-        coords['l'] = (location[0]+1, location[1])
-        coords['f'] = (location[0], location[1]+1)
-        coords['r'] = (location[0]-1, location[1])
-    elif location[2] == 'r':
-        coords['l'] = (location[0], location[1]-1)
-        coords['f'] = (location[0]+1, location[1])
-        coords['r'] = (location[0], location[1]+1)
-    elif location[2] == 'u':
-        coords['l'] = (location[0]-1, location[1])
-        coords['f'] = (location[0], location[1]-1)
-        coords['r'] = (location[0]+1, location[1])
-    elif location[2] == 'l':
-        coords['l'] = (location[0], location[1]+1)
-        coords['f'] = (location[0]-1, location[1])
-        coords['r'] = (location[0], location[1]-1)
+    x, y = position
+    if faceDir == 'd':
+        coords['l'] = (x+1, y  )
+        coords['f'] = (x  , y+1)
+        coords['r'] = (x-1, y  )
+    elif faceDir == 'r':
+        coords['l'] = (x  , y-1)
+        coords['f'] = (x+1, y  )
+        coords['r'] = (x  , y+1)
+    elif faceDir == 'u':
+        coords['l'] = (x-1, y  )
+        coords['f'] = (x  , y-1)
+        coords['r'] = (x+1, y  )
+    elif faceDir == 'l':
+        coords['l'] = (x  , y+1)
+        coords['f'] = (x-1, y  )
+        coords['r'] = (x  , y-1)
     return coords
 
-def remap(location, grid, objects):
+'''
+Updates the grid with objects from the scan
+Parameters:
+    position, a tuple (x, y)
+    faceDir, the facing direction 'l', 'r', 'u', 'd'
+    grid, the grid representing open and blocked cells
+    objects, the dictionary of 'l', 'f', and 'r', with 0 and 1s for open and blocked
+Returns:
+    Updated grid, if the grid is the same
+'''
+def remap(position, faceDir, grid, objects):
     cGrid = grid
-    objectCoords = getAdjacentCoords(location)
-    for d in objectCoords.keys():
-        c = objectCoords[d]
-        if 0 <= c[0] <= 4 and 0 <= c[1] <= 4:
-            cGrid[c[0]][c[1]] = objects[c[0]][c[1]]
+    objectCoords = getAdjacentCoords(position, faceDir)
+    for direction in objectCoords.keys():
+        coord = objectCoords[direction]
+        if 0 <= coord[0] <= 4 and 0 <= coord[1] <= 4:
+            cGrid[coord[0]][coord[1]] = objects[direction]
             
     return cGrid, cGrid == grid
     
