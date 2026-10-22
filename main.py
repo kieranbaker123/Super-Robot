@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 21 20:09:36 2026
-
-@author: gagej
-"""
 from microbit import *
 import robotDisplay
 import driveRobot
@@ -20,7 +14,8 @@ def main():
     path = pathfinding.findPath(grid, start, goal)
     
     if path != None:
-        path.pop(0) # remove start position
+        if start in path:
+            path.remove(start)
         robotDisplay.blinkPath(path, 2, grid, start, goal)
 
     robotDisplay.displayGrid(grid, start, goal)
@@ -35,20 +30,16 @@ def main():
         iteration += 1
         print('(main.py, main)\t\t\tIteration', iteration)
         
-        # TODO: test object checking
-        
-        # update display
         robotDisplay.displayGrid(grid, start, goal)
         display.set_pixel(position[0], position[1], 9)
         
-        # get new objects
         sensorData = optics.scan()
+        print('(main.py, main)\t\t\tSensor Data:', sensorData)
         newObjects = optics.checkObject(sensorData)
+        print('(main.py, main)\t\t\tObjects:', newObjects)
         
-        # update map
         grid, isSame = objects.remap(position, faceDir, grid, newObjects)
         
-        # if the grid changed, calculate new path
         if not isSame:
             print('(main.py, main)\t\t\tNew objects detected, Map updated')
             robotDisplay.displayGrid(grid, start, goal)
@@ -56,45 +47,45 @@ def main():
             
             path = pathfinding.findPath(grid, position, goal)
             
-            # if the path exists, display it
             if path != None:
-                path.pop(0)
+                if position in path:
+                    path.remove(position)
                 robotDisplay.blinkPath(path, 2, grid, position, goal)
+                print(path)
 
-        # check if path exists, if not skip rest of iteration
         if path == None:
             print('(main.py, main)\t\t\tPath does not exist')
             sleep(500)
+            print('============================')  
             continue
         robotDisplay.showPath(path)
         
-        # movement logic
         nextCell = path[0]
+        
+        print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
+        
         relDir, globalDir = pathfinding.dirToCell(nextCell, position, faceDir)
 
-        print('(main.py, main)\t\t\tCurrent cell:', position, 'Next Cell:', nextCell)
         print('(main.py, main)\t\t\tFacing:', faceDir, 'To face:', globalDir, 'Turn:', relDir)
         
-        # the the robot
         if relDir != 'f':
             driveRobot.turn(relDir)
             
-        # advance robot to next cell
         driveRobot.advance()
         
-        # update location data
         faceDir = globalDir
         position = nextCell
         
-        # remove completed cell from path
         path.pop(0)
 
         print('============================')
-    
+
     print('(main.py, main)\t\t\tLoop terminated')
+
     if position == goal:
         print('(main.py, main)\t\t\tGoal reached')
-        
 
 if __name__ == '__main__':
-    main()
+    while True:
+        if button_a.was_pressed():
+            main()
