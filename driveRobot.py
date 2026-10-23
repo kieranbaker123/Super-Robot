@@ -3,16 +3,18 @@ import robotbit_library as r
 from math import fabs
 from microbit import *
 
-CM_PER_SECOND = 28.8
+CM_PER_SECOND = 29.6
 CM_PER_TILE = 28.0
-RIGHT_TURN_TIME = 400
-LEFT_TURN_TIME = 360
+RIGHT_TURN_TIME = 596
+LEFT_TURN_TIME = 553
 
 MOTOR_LEFT = 0x3
 MOTOR_RIGHT = 0x1
 
-POWER_LEFT = 60
+POWER_LEFT = 57
 POWER_RIGHT = 50
+POWER_LEFT_TURN = 35
+POWER_RIGHT_TURN = 35
 
 '''
 Turns the robot left or right
@@ -21,23 +23,24 @@ Parameters:
 '''
 def turn(direction):
     if direction == 'r':
-        r.motor(MOTOR_LEFT, POWER_LEFT)
-        r.motor(MOTOR_RIGHT, POWER_RIGHT)
+        r.motor(MOTOR_LEFT, POWER_LEFT_TURN)
+        r.motor(MOTOR_RIGHT, POWER_RIGHT_TURN)
         sleep( RIGHT_TURN_TIME )
         r.all_stop()
         print('(driveRobot.py, turn)\t\tTurned right')
     elif direction == 'l':
-        r.motor(MOTOR_LEFT, -POWER_LEFT)
-        r.motor(MOTOR_RIGHT, -POWER_RIGHT)
+        r.motor(MOTOR_LEFT, -POWER_LEFT_TURN)
+        r.motor(MOTOR_RIGHT, -POWER_RIGHT_TURN)
         sleep( LEFT_TURN_TIME )
         r.all_stop()
         print('(driveRobot.py, turn)\t\tTurned left')
     elif direction == 'b':
-        r.motor(MOTOR_LEFT, -POWER_LEFT)
-        r.motor(MOTOR_RIGHT, -POWER_RIGHT)
+        r.motor(MOTOR_LEFT, -POWER_LEFT_TURN)
+        r.motor(MOTOR_RIGHT, -POWER_RIGHT_TURN)
         sleep( LEFT_TURN_TIME * 2 )
         r.all_stop()
         print('(driveRobot.py, turn)\t\tTurned around')
+    sleep(300)
         
 '''
 Advances the robot forward or backward
