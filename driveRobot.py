@@ -3,15 +3,15 @@ import robotbit_library as r
 from math import fabs
 from microbit import *
 
-CM_PER_SECOND = 25.67
+CM_PER_SECOND = 28.8
 CM_PER_TILE = 28.0
-RIGHT_TURN_TIME = 385
-LEFT_TURN_TIME = 407
+RIGHT_TURN_TIME = 400
+LEFT_TURN_TIME = 360
 
 MOTOR_LEFT = 0x3
 MOTOR_RIGHT = 0x1
 
-POWER_LEFT = 47
+POWER_LEFT = 60
 POWER_RIGHT = 50
 
 '''
