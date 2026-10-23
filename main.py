@@ -53,7 +53,7 @@ def main():
             if path != None:
                 if position in path:
                     path.remove(position)
-                robotDisplay.blinkPath(path, 2, grid, position, goal)
+                robotDisplay.showPath(path)
 
         if path == None:
             print('(main.py, main)\t\t\tPath does not exist')
