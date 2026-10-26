@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 19 10:09:31 2026
-
-@author: gagej
-"""
-
 import math
 
 '''
