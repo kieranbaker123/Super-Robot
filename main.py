@@ -4,10 +4,28 @@ import driveRobot
 import objects
 import optics
 import pathfinding
-
-SECTOR_MAP = "S01000010001110000101000X"
+import radio
 
 def main():
+    display.show(Image.BUTTERFLY)
+    radio.config(channel=9)
+    radio.on()
+    SECTOR_MAP = ''
+
+    while SECTOR_MAP == '':
+        sleep(2000)
+        radio.send('09 Request')
+        display.show(Image.HEART)
+        msg = radio.receive()
+        if msg:
+            display.show(Image.CHESSBOARD)
+            if len(msg) == 25:
+                SECTOR_MAP = msg
+            else:
+                radio.send('09 Request')
+
+    radio.off()
+    
     grid_chars = pathfinding.parseString(SECTOR_MAP, 5, 5)
     grid, start, goal = pathfinding.parseMap(grid_chars)
     
