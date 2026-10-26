@@ -4,10 +4,25 @@ import driveRobot
 import objects
 import optics
 import pathfinding
+import radio
 
-SECTOR_MAP = "S01000010001110000101000X"
+
 
 def main():
+    radio.config(channel=9)
+    radio.on()
+    SECTOR_MAP = ''
+    
+    radio.send('09 Request')
+    
+    while SECTOR_MAP == '':
+        sleep(5000)
+        msg = radio.receive()
+        if (msg):
+            SECTOR_MAP = msg
+
+    radio.off()
+    
     grid_chars = pathfinding.parseString(SECTOR_MAP, 5, 5)
     grid, start, goal = pathfinding.parseMap(grid_chars)
     
@@ -90,4 +105,5 @@ def main():
 if __name__ == '__main__':
     while True:
         if button_a.was_pressed():
+            
             main()
