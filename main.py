@@ -5,21 +5,22 @@ import objects
 import optics
 import pathfinding
 import radio
-
-
-
 def main():
+    display.show(Image.BUTTERFLY)
     radio.config(channel=9)
     radio.on()
     SECTOR_MAP = ''
-    
+
     radio.send('09 Request')
-    
     while SECTOR_MAP == '':
-        sleep(5000)
+        sleep(2000)
+        radio.send('09 Request')
+        display.show(Image.HEART)
         msg = radio.receive()
-        if (msg):
-            SECTOR_MAP = msg
+        if msg:
+            display.show(Image.CHESSBOARD)
+            if len(msg) == 25:
+                SECTOR_MAP = msg
 
     radio.off()
     
