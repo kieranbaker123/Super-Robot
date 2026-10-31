@@ -123,7 +123,8 @@ Parameters:
     robotPosition, (x, y) of the robot
     faceDir, facing direction of the robot, 'u', 'r', 'd', or 'l'
 Returns:
-    the direction of the cell, 'f', 'r', 'l', 'b' for forward, right, left, and back
+    the direction of the cell relative to the robot, 'f', 'r', 'l', 'b' for forward, right, left, and back
+    the direction to the cell in global coordinates, 'u', 'r', 'd', 'l'
 '''
 def dirToCell(cellPosition, robotPosition, faceDir):
     cellX, cellY = cellPosition
@@ -137,7 +138,7 @@ def dirToCell(cellPosition, robotPosition, faceDir):
     dot = faceX * dirX + faceY * dirY
     det = faceX * dirY - faceY * dirX
     
-    ccwRot = math.atan2(-det, dot) * 2 / math.pi # linear algebra stuff that i googled <3
+    ccwRot = math.atan2(-det, dot) * 2 / math.pi 
     
     if ccwRot == -2 or ccwRot == 2:
         relDir = 'b'
